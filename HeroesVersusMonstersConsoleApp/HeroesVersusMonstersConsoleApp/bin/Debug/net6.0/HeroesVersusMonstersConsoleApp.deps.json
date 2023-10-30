@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "HeroesVersusMonstersConsoleApp/1.0.0": {
+        "dependencies": {
+          "HeroesVersusMonstersLibrary": "1.0.0"
+        },
+        "runtime": {
+          "HeroesVersusMonstersConsoleApp.dll": {}
+        }
+      },
+      "HeroesVersusMonstersLibrary/1.0.0": {
+        "runtime": {
+          "HeroesVersusMonstersLibrary.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "HeroesVersusMonstersConsoleApp/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "HeroesVersusMonstersLibrary/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -1,0 +1,11 @@
+D:\Desktop\hvsmtwo\HeroesVersusMonstersConsoleApp\HeroesVersusMonstersLibrary\bin\Debug\net6.0\HeroesVersusMonstersLibrary.deps.json
+D:\Desktop\hvsmtwo\HeroesVersusMonstersConsoleApp\HeroesVersusMonstersLibrary\bin\Debug\net6.0\HeroesVersusMonstersLibrary.dll
+D:\Desktop\hvsmtwo\HeroesVersusMonstersConsoleApp\HeroesVersusMonstersLibrary\bin\Debug\net6.0\HeroesVersusMonstersLibrary.pdb
+D:\Desktop\hvsmtwo\HeroesVersusMonstersConsoleApp\HeroesVersusMonstersLibrary\obj\Debug\net6.0\HeroesVersusMonstersLibrary.GeneratedMSBuildEditorConfig.editorconfig
+D:\Desktop\hvsmtwo\HeroesVersusMonstersConsoleApp\HeroesVersusMonstersLibrary\obj\Debug\net6.0\HeroesVersusMonstersLibrary.AssemblyInfoInputs.cache
+D:\Desktop\hvsmtwo\HeroesVersusMonstersConsoleApp\HeroesVersusMonstersLibrary\obj\Debug\net6.0\HeroesVersusMonstersLibrary.AssemblyInfo.cs
+D:\Desktop\hvsmtwo\HeroesVersusMonstersConsoleApp\HeroesVersusMonstersLibrary\obj\Debug\net6.0\HeroesVersusMonstersLibrary.csproj.CoreCompileInputs.cache
+D:\Desktop\hvsmtwo\HeroesVersusMonstersConsoleApp\HeroesVersusMonstersLibrary\obj\Debug\net6.0\HeroesVersusMonstersLibrary.dll
+D:\Desktop\hvsmtwo\HeroesVersusMonstersConsoleApp\HeroesVersusMonstersLibrary\obj\Debug\net6.0\refint\HeroesVersusMonstersLibrary.dll
+D:\Desktop\hvsmtwo\HeroesVersusMonstersConsoleApp\HeroesVersusMonstersLibrary\obj\Debug\net6.0\HeroesVersusMonstersLibrary.pdb
+D:\Desktop\hvsmtwo\HeroesVersusMonstersConsoleApp\HeroesVersusMonstersLibrary\obj\Debug\net6.0\ref\HeroesVersusMonstersLibrary.dll
