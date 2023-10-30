@@ -40,19 +40,24 @@ namespace HeroesVersusMonstersLibrary
                     Pelt pelt = new Pelt(this);
                     GoldCoin gold = new GoldCoin();
                     _lootTable[pelt] = Dice.Roll(1, 4);
-                    _lootTable[gold] = Dice.Roll(1, 6) * this._valueModifier;
                     break;
                 case 1:
                     this._race = "Orc";
                     this._name = "Orc";
                     this._strengthModifier = 1;
                     this._valueModifier = 2;
+                    GoldCoin gold1 = new GoldCoin();
+                    _lootTable[gold1] = Dice.Roll(1, 6) * this._valueModifier;
                     break;
                 case 2:
                     this._race = "Dragonling";
                     this._name = "Dragonling";
                     this._staminaModifier = 1;
                     this._valueModifier = 3;
+                    Pelt pelt2 = new Pelt(this);
+                    GoldCoin gold2 = new GoldCoin();
+                    _lootTable[pelt2] = Dice.Roll(1, 4);
+                    _lootTable[gold2] = Dice.Roll(1, 6) * this._valueModifier;
                     break;
             }
 
