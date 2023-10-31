@@ -1,4 +1,5 @@
-﻿using HeroesVersusMonstersLibrary.Loots;
+﻿using HeroesVersusMonstersLibrary.Abilities;
+using HeroesVersusMonstersLibrary.Loots;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,18 @@ namespace HeroesVersusMonstersLibrary
 {
     public class Monster : Entity
     {
+
+        protected Ability _ability = new Ability();
+
+        public Ability Ability
+        {
+            get { return _ability; }
+            private set { _ability = value; }
+        }
+
+
+
+
         //List made to contain all loots from the monster from the polymorph class "Generic Loot"
 
         protected Dictionary<GenericLoot, int> _lootTable = new Dictionary<GenericLoot, int>();
@@ -29,6 +42,15 @@ namespace HeroesVersusMonstersLibrary
 			private set { _valueModifier = value; }
 		}
 
+
+        //Method to add an ability to the monster
+        public void AddAbility(Ability ability)
+        {
+            this._ability = ability;
+        }
+
+
+        //Specifications related to monster type
         public Monster(int raceModifier)
         {
             switch (raceModifier)
@@ -40,24 +62,27 @@ namespace HeroesVersusMonstersLibrary
                     Pelt pelt = new Pelt(this);
                     GoldCoin gold = new GoldCoin();
                     _lootTable[pelt] = Dice.Roll(1, 4);
+                    this.AddAbility(new Bite());
                     break;
                 case 1:
                     this._race = "Orc";
                     this._name = "Orc";
-                    this._strengthModifier = 1;
+                    this._strengthModifier += 1;
                     this._valueModifier = 2;
                     GoldCoin gold1 = new GoldCoin();
                     _lootTable[gold1] = Dice.Roll(1, 6) * this._valueModifier;
+                    this.AddAbility(new Maul());
                     break;
                 case 2:
                     this._race = "Dragonling";
                     this._name = "Dragonling";
-                    this._staminaModifier = 1;
+                    this._staminaModifier += 1;
                     this._valueModifier = 3;
                     Pelt pelt2 = new Pelt(this);
                     GoldCoin gold2 = new GoldCoin();
                     _lootTable[pelt2] = Dice.Roll(1, 4);
                     _lootTable[gold2] = Dice.Roll(1, 6) * this._valueModifier;
+                    this.AddAbility(new Fireball());
                     break;
             }
 

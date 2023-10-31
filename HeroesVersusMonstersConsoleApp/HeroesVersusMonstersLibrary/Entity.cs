@@ -1,4 +1,6 @@
-﻿namespace HeroesVersusMonstersLibrary
+﻿using HeroesVersusMonstersLibrary.Abilities;
+
+namespace HeroesVersusMonstersLibrary
 {
     public class Entity
     {
@@ -55,12 +57,31 @@
 			private set { _stamina = value; }
 		}
 
-		protected int _staminaModifier = 0;
+        // Max stamina to keep track of the difference between used and unused
+
+        protected int _maxStamina;
+
+        public int MaxStamina
+        {
+            get { return _maxStamina; }
+            private set { _maxStamina = value; }
+        }
+
+        protected int _staminaModifier = 0;
 
 		public int StaminaModifier
 		{
 			get { return _staminaModifier; }
 			private set { _staminaModifier = value; }
+		}
+
+
+		protected bool _playerControlled = false;
+
+		public bool PlayerControlled
+		{
+			get { return _playerControlled; }
+			private set { _playerControlled = value; }
 		}
 
 
@@ -83,15 +104,69 @@
 
         #endregion
 
+
+		//Using an ability on an entity
+
+		public void UseAbility(Ability ability, Entity ennemy)
+		{
+			Random random = new Random();
+			int modifier = random.Next(1, this.StrengthModifier + 1);
+			ennemy._healthPoints -= ability.BaseDamage * modifier;
+			this._stamina -= ability.StaminaCost;
+            Console.WriteLine($"{ennemy.Name} hit for {ability.BaseDamage * modifier} dmg !");
+        }
+
         public Entity()
         {
 			_strength = Dice.RollForStats();
 			_stamina = Dice.RollForStats();
+			CalculateModifier();
+        }
+
+
+		//Calculation modifier based on strength and stamina stat
+		public virtual void CalculateModifier()
+		{
+			switch (this._strength)
+			{
+				case < 5:
+                    this._strengthModifier = -1;
+					break;
+				case < 10:
+                    this._strengthModifier = 0;
+					break;
+				case < 15:
+                    this._strengthModifier = 1;
+					break;
+				default:
+                    this._strengthModifier = 2;
+					break;
+			}
+
+            switch (this._stamina)
+            {
+                case < 5:
+                    this._staminaModifier = -1;
+                    break;
+                case < 10:
+                    this._staminaModifier = 0;
+                    break;
+                case < 15:
+                    this._staminaModifier = 1;
+                    break;
+                default:
+                    this._staminaModifier = 2;
+                    break;
+            }
+
         }
 
 		public virtual void DisplayStatus()
 		{
-			string finalString = $"Name : {this.Name}\nStrength : {this.Strength}\nStamina : {this.Stamina}\nHP : {this.HealthPoints}/{this.MaxHealthPoints}\n";
+			string finalString = $"Name : {this.Name}\nStrength : {this.Strength}\nStr" +
+				$"ength Modifier : {this.StrengthModifier}\nStamina : {this.Stamina}\nSta" +
+				$"mina Modifier : {this.StaminaModifier}\nH" +
+				$"P : {this.HealthPoints}/{this.MaxHealthPoints}\n";
             Console.WriteLine(finalString);
         }
 
