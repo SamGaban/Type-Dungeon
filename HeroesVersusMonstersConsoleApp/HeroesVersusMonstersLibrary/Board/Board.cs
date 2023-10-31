@@ -8,7 +8,7 @@ namespace HeroesVersusMonstersLibrary.Board
 {
     public class Board
     {
-
+        #region Props
         protected int _horizontalSize;
 
         public int HorizontalSize
@@ -33,6 +33,7 @@ namespace HeroesVersusMonstersLibrary.Board
             get { return _entityList; }
             private set { _entityList = value; }
         }
+        #endregion
 
         public Board(int horizontalsize, int verticalsize, List<Entity> entitylist)
         {
@@ -41,6 +42,31 @@ namespace HeroesVersusMonstersLibrary.Board
             this._entityList = entitylist;
         }
 
+
+        //Function that displays ASCII art of monsters participants of this board
+        public void DisplayGraphics()
+        {
+            int posX = 3;
+            int posY = 3;
+            foreach (Entity entity in _entityList)
+            {
+                if (!entity.PlayerControlled)
+                {
+                    foreach (string line in entity.ASCII.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None))
+                    {
+                        Console.SetCursorPosition(posX, posY);
+                        Console.WriteLine(line);
+                        posY++;
+
+                    }
+                    posX += 25;
+                    posY = 3;
+                }
+            }
+        }
+
+
+        //Function that displays text information about participants of this board
         public void Display()
         {
             int posX = 0;
@@ -49,7 +75,7 @@ namespace HeroesVersusMonstersLibrary.Board
             foreach (Entity entity in this.EntityList)
             {
                 Console.SetCursorPosition(posX, posY);
-                Console.Write($"┌───────────────────────");
+                Console.Write($"┌────────────────────────");
                 posY++;
                 Console.SetCursorPosition(posX, posY);
                 Console.Write($"│{entity.Name}");
@@ -58,12 +84,17 @@ namespace HeroesVersusMonstersLibrary.Board
                 Console.Write($"│HP : {entity.HealthPoints} / {entity.MaxHealthPoints}");
                 posY++;
                 Console.SetCursorPosition(posX, posY);
-                Console.Write($"│Stamina : {entity.Stamina} / {entity.MaxStamina}");
+                Console.Write($"{(entity.MaxStamina != 0 ? $"│Stamina : {entity.Stamina} / {entity.MaxStamina}" : "│")}");
                 posY++;
                 posX += 25;
                 posY = this._verticalSize + 4;
 
             }
+            posX = 0;
+            posY = this._verticalSize + 7;
+            Console.SetCursorPosition(posX, posY);
+            Console.WriteLine("└───────────────────────────────────────────────────────────────────────────────" +
+                "────────────────────────────────────────────────────────────────────────────────");
         }
 
 
@@ -96,6 +127,8 @@ namespace HeroesVersusMonstersLibrary.Board
             Console.Write("╝");
 
             this.Display();
+            this.DisplayGraphics();
+            Console.SetCursorPosition(0, VerticalSize + 10);
         }
     }
 }

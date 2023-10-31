@@ -1,4 +1,5 @@
 ﻿using HeroesVersusMonstersLibrary.Abilities;
+using HeroesVersusMonstersLibrary.Board;
 using HeroesVersusMonstersLibrary.Loots;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,6 @@ namespace HeroesVersusMonstersLibrary
             get { return _ability; }
             private set { _ability = value; }
         }
-
 
 
 
@@ -58,6 +58,7 @@ namespace HeroesVersusMonstersLibrary
                 case 0:
                     this._race = "Wolf";
                     this._name = "Wolf";
+                    this._ascii = AsciiArt.wolf;
                     this._valueModifier = 1;
                     Pelt pelt = new Pelt(this);
                     GoldCoin gold = new GoldCoin();
@@ -67,6 +68,7 @@ namespace HeroesVersusMonstersLibrary
                 case 1:
                     this._race = "Orc";
                     this._name = "Orc";
+                    this._ascii = AsciiArt.orc;
                     this._strengthModifier += 1;
                     this._valueModifier = 2;
                     GoldCoin gold1 = new GoldCoin();
@@ -76,6 +78,7 @@ namespace HeroesVersusMonstersLibrary
                 case 2:
                     this._race = "Dragonling";
                     this._name = "Dragonling";
+                    this._ascii = AsciiArt.dragonling;
                     this._staminaModifier += 1;
                     this._valueModifier = 3;
                     Pelt pelt2 = new Pelt(this);

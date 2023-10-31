@@ -15,8 +15,16 @@ namespace HeroesVersusMonstersLibrary
 			private set { _race = value; }
 		}
 
+		protected string _ascii = " X ";
 
-		protected string _name = "unnamed";
+        public string ASCII
+        {
+            get { return _ascii; }
+            private set { _ascii = value; }
+        }
+
+
+        protected string _name = "unnamed";
 
 		public string Name
 		{
