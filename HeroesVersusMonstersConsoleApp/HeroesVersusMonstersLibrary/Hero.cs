@@ -13,17 +13,6 @@ namespace HeroesVersusMonstersLibrary
 
         #region props
 
-        // List of abilities linked to the hero
-
-        protected List<Ability> _abilities = new List<Ability>();
-
-        public List<Ability> Abilities
-        {
-            get { return _abilities; }
-            private set { _abilities = value; }
-        }
-
-
 
         #endregion
 
@@ -52,7 +41,7 @@ namespace HeroesVersusMonstersLibrary
                     this._staminaModifier += 2;
                     break;
             }
-            this._healthPoints = (_stamina + _staminaModifier) * 10;
+            this._healthPoints = (_stamina + _staminaModifier) * 2;
             this._maxHealthPoints = _healthPoints;
             this._maxStamina = this._stamina;
             this.AddAbility(new FaceFist());

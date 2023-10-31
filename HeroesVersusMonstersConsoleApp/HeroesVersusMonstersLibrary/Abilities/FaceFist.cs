@@ -13,7 +13,7 @@ namespace HeroesVersusMonstersLibrary.Abilities
         {
             this._active = true;
             this._name = "FaceFist";
-            this._staminaCost = 1;
+            this._staminaCost = 2;
             this._baseDamage = 4;
         }
     }

@@ -5,9 +5,21 @@ namespace HeroesVersusMonstersLibrary
     public class Entity
     {
 
-		#region Props
+        #region Props
 
-		protected string _race = "Unraced";
+        // List of abilities linked to the entity
+
+        protected List<Ability> _abilities = new List<Ability>();
+
+        public List<Ability> Abilities
+        {
+            get { return _abilities; }
+            private set { _abilities = value; }
+        }
+
+
+
+        protected string _race = "Unraced";
 
 		public string Race
 		{
@@ -36,7 +48,7 @@ namespace HeroesVersusMonstersLibrary
 
 		public bool Alive
 		{
-			get { return _alive = true; }
+			get { return _alive; }
 			private set { _alive = value; }
 		}
 
@@ -110,7 +122,14 @@ namespace HeroesVersusMonstersLibrary
 			private set { _maxHealthPoints = value; }
 		}
 
-        #endregion
+		#endregion
+
+		//Repleneshing stamina to max
+
+		public void StaminaToMax()
+		{
+			this._stamina = this._maxStamina;
+		}
 
 
 		//Using an ability on an entity
@@ -121,7 +140,21 @@ namespace HeroesVersusMonstersLibrary
 			int modifier = random.Next(1, this.StrengthModifier + 1);
 			ennemy._healthPoints -= ability.BaseDamage * modifier;
 			this._stamina -= ability.StaminaCost;
-            Console.WriteLine($"{ennemy.Name} hit for {ability.BaseDamage * modifier} dmg !");
+			ennemy._stamina -= ability.BaseDamage;
+			if (ennemy.MaxStamina > 0)
+			{
+            Console.WriteLine($"{this.Name} hit {ennemy.Name} for {ability.BaseDamage * modifier} dmg !");
+            Console.WriteLine($"{ennemy.Name} lost {ability.BaseDamage} stamina for the next turn");
+            }
+			else
+			{
+            Console.WriteLine($"{this.Name} hit {ennemy.Name} for {ability.BaseDamage * modifier} dmg !");
+			}
+			if (ennemy.HealthPoints <= 0)
+			{
+				ennemy._alive = false;
+			}
+
         }
 
         public Entity()
@@ -167,15 +200,6 @@ namespace HeroesVersusMonstersLibrary
                     break;
             }
 
-        }
-
-		public virtual void DisplayStatus()
-		{
-			string finalString = $"Name : {this.Name}\nStrength : {this.Strength}\nStr" +
-				$"ength Modifier : {this.StrengthModifier}\nStamina : {this.Stamina}\nSta" +
-				$"mina Modifier : {this.StaminaModifier}\nH" +
-				$"P : {this.HealthPoints}/{this.MaxHealthPoints}\n";
-            Console.WriteLine(finalString);
         }
 
     }

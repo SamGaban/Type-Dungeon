@@ -12,16 +12,6 @@ namespace HeroesVersusMonstersLibrary
     public class Monster : Entity
     {
 
-        protected Ability _ability = new Ability();
-
-        public Ability Ability
-        {
-            get { return _ability; }
-            private set { _ability = value; }
-        }
-
-
-
         //List made to contain all loots from the monster from the polymorph class "Generic Loot"
 
         protected Dictionary<GenericLoot, int> _lootTable = new Dictionary<GenericLoot, int>();
@@ -46,7 +36,7 @@ namespace HeroesVersusMonstersLibrary
         //Method to add an ability to the monster
         public void AddAbility(Ability ability)
         {
-            this._ability = ability;
+            this._abilities.Add(ability);
         }
 
 
@@ -89,7 +79,7 @@ namespace HeroesVersusMonstersLibrary
                     break;
             }
 
-            this._healthPoints = (_stamina + _staminaModifier) * 10;
+            this._healthPoints = (_stamina + _staminaModifier) * 2;
             this._maxHealthPoints = _healthPoints;
 
         }

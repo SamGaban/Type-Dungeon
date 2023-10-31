@@ -8,6 +8,15 @@ namespace HeroesVersusMonstersLibrary.Board
 {
     public static class AsciiArt
     {
+        public static string dead = @"        _  _
+  ___ (~ )( ~)
+ /   \_\ \/ /
+|   D_ ]\ \/
+|   D _]/\ \
+ \___/ / /\ \
+      (_ )( _)
+        ~  ~";
+
         public static string wolf = @"                     .
                     / V\
                   / `  /
