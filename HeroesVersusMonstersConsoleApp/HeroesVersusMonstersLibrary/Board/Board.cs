@@ -59,12 +59,6 @@ namespace HeroesVersusMonstersLibrary.Board
                 Console.WriteLine($"Attack from {_entityList[i].Name} incoming !");
                 Console.WriteLine();
                 Console.WriteLine("Type the incoming sentence quickly to deflect it !");
-                Console.WriteLine("───────────────────────── 3");
-                Thread.Sleep(1000);
-                this.Refresh();
-                Console.WriteLine($"Attack from {_entityList[i].Name} incoming !");
-                Console.WriteLine();
-                Console.WriteLine("Type the incoming sentence quickly to deflect it !");
                 Console.WriteLine("───────────────────────── 2");
                 Thread.Sleep(1000);
                 this.Refresh();
@@ -88,7 +82,7 @@ namespace HeroesVersusMonstersLibrary.Board
 
         public void MonsterAttack(Entity monster, Entity hero)
         {
-            QuickTimeEvent qte = new QuickTimeEvent(SentenceGenerator.Generate(3, monster), 6, monster, monster.Abilities[0], hero);
+            QuickTimeEvent qte = new QuickTimeEvent(SentenceGenerator.Generate(3, monster), 8, monster, monster.Abilities[0], hero);
             qte.RunChallengeAsync().GetAwaiter().GetResult();
             this.Refresh();
         }
@@ -139,8 +133,8 @@ namespace HeroesVersusMonstersLibrary.Board
                     Console.WriteLine();
                 }
                 counter++;
-                Console.WriteLine($"{counter} : Skip Turn");
             }
+            Console.WriteLine($"{counter} : Skip Turn");
             string? userChoice = Console.ReadLine();
             this.Refresh();
             int userInput = -1;

@@ -55,7 +55,7 @@ namespace HeroesVersusMonstersLibrary.Board
         {
             Console.WriteLine(_challenge);
 
-            var cts = new CancellationTokenSource();
+            CancellationTokenSource cts = new CancellationTokenSource();
             Task timeoutTask = Task.Delay(TimeSpan.FromSeconds(_timeLimitInSeconds), cts.Token);
             Task<string?> inputTask = Task.Run(() => Console.ReadLine(), cts.Token);
 
@@ -64,16 +64,13 @@ namespace HeroesVersusMonstersLibrary.Board
                 Console.WriteLine();
                 Console.WriteLine("Success");
                 Console.WriteLine();
-                Console.WriteLine("Avoiding damages");
-
+                _receivingEntity.UseAbility(_receivingEntity.Abilities[0], _sendingEntity);
                 Thread.Sleep(2000);
             }
             else
             {
                 Console.WriteLine("Too slow!");
-
-                Thread.Sleep(2000);
-
+                Thread.Sleep(1500);
                 Console.WriteLine();
                 _sendingEntity.UseAbility(_sendingEntity.Abilities[0], _receivingEntity);
 

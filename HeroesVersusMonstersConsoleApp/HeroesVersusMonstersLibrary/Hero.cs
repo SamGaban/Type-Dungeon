@@ -44,7 +44,9 @@ namespace HeroesVersusMonstersLibrary
             this._healthPoints = (_stamina + _staminaModifier) * 2;
             this._maxHealthPoints = _healthPoints;
             this._maxStamina = this._stamina;
+            this.AddAbility(new CounterHit());
             this.AddAbility(new FaceFist());
+            this.AddAbility(new DelawareSmash());
         }
     }
 }
