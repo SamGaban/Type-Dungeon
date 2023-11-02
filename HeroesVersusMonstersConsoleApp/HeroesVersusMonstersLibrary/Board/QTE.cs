@@ -12,6 +12,7 @@ namespace HeroesVersusMonstersLibrary.Board
     {
         public static void RunChallenge(string challenge, int timeLimitInSeconds, Entity sendingEntity, Ability ability, Entity receivingEntity)
         {
+            Console.CursorVisible = true;
             Console.WriteLine(challenge);
 
             Stopwatch stopwatch = new Stopwatch();
@@ -55,13 +56,19 @@ namespace HeroesVersusMonstersLibrary.Board
 
             if (userInput.ToString().Trim() == challenge)
             {
-                Console.WriteLine("\nSuccess");
+                Console.Clear();
+                Console.WriteLine();
+                Console.WriteLine(AsciiArt.success);
+                Console.WriteLine();
                 receivingEntity.UseAbility(receivingEntity.Abilities[0], sendingEntity);
                 Thread.Sleep(2000);
             }
             else
             {
-                Console.WriteLine("\nToo slow! / Wrong input");
+                Console.Clear();
+                Console.WriteLine();
+                Console.WriteLine(AsciiArt.failure);
+                Console.WriteLine();
                 sendingEntity.UseAbility(sendingEntity.Abilities[0], receivingEntity);
                 Thread.Sleep(2000);
             }
@@ -71,6 +78,7 @@ namespace HeroesVersusMonstersLibrary.Board
             {
                 Console.ReadKey(true);
             }
+            Console.CursorVisible = false;
         }
     }
 }

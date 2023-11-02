@@ -33,6 +33,7 @@ namespace HeroesVersusMonstersLibrary
         //Specifications related to monster type
         public Monster(int raceModifier)
         {
+            Random randomNum = new Random();
             switch (raceModifier)
             {
                 case 0:
@@ -41,8 +42,7 @@ namespace HeroesVersusMonstersLibrary
                     this._ascii = AsciiArt.wolf;
                     this._valueModifier = 1;
                     Pelt pelt = new Pelt(this);
-                    GoldCoin gold = new GoldCoin();
-                    _lootTable[pelt] = Dice.Roll(0, 4);
+                    _lootTable[pelt] = randomNum.Next(0, 4);
                     this.AddAbility(new Bite());
                     break;
                 case 1:
@@ -52,7 +52,7 @@ namespace HeroesVersusMonstersLibrary
                     this._strengthModifier += 1;
                     this._valueModifier = 2;
                     GoldCoin gold1 = new GoldCoin();
-                    _lootTable[gold1] = Dice.Roll(1, 6) * this._valueModifier;
+                    _lootTable[gold1] = randomNum.Next(1, 7) * this._valueModifier;
                     this.AddAbility(new Maul());
                     break;
                 case 2:
@@ -63,8 +63,8 @@ namespace HeroesVersusMonstersLibrary
                     this._valueModifier = 3;
                     Pelt pelt2 = new Pelt(this);
                     GoldCoin gold2 = new GoldCoin();
-                    _lootTable[pelt2] = Dice.Roll(0, 4);
-                    _lootTable[gold2] = Dice.Roll(1, 6) * this._valueModifier;
+                    _lootTable[pelt2] = randomNum.Next(0, 4);
+                    _lootTable[gold2] = randomNum.Next(1, 9) * this._valueModifier;
                     this.AddAbility(new Fireball());
                     break;
             }

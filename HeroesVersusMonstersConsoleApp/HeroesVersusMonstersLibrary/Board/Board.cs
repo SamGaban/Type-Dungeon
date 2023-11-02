@@ -210,7 +210,7 @@ namespace HeroesVersusMonstersLibrary.Board
             }
 
             Console.Clear();
-            Console.WriteLine("Combat Ended");
+            Console.WriteLine(AsciiArt.fightWon);
             Console.WriteLine();
             Console.WriteLine("Health Replenished");
             Console.WriteLine();
@@ -219,7 +219,7 @@ namespace HeroesVersusMonstersLibrary.Board
             foreach (KeyValuePair<GenericLoot, int> entry in this._lootTable)
             {
                 this._entityList[0].AddToInventory(entry.Key, entry.Value);
-                Console.WriteLine($"{entry.Value} X {entry.Key.Type}");
+                Console.WriteLine(entry.Value > 0 ? $"{entry.Value} X {entry.Key.Type}" : "");
             }
             Console.WriteLine();
             Console.WriteLine("Your inventory :");
