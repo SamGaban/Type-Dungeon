@@ -42,7 +42,7 @@ namespace HeroesVersusMonstersLibrary
                     this._valueModifier = 1;
                     Pelt pelt = new Pelt(this);
                     GoldCoin gold = new GoldCoin();
-                    _lootTable[pelt] = Dice.Roll(1, 4);
+                    _lootTable[pelt] = Dice.Roll(0, 4);
                     this.AddAbility(new Bite());
                     break;
                 case 1:
@@ -63,7 +63,7 @@ namespace HeroesVersusMonstersLibrary
                     this._valueModifier = 3;
                     Pelt pelt2 = new Pelt(this);
                     GoldCoin gold2 = new GoldCoin();
-                    _lootTable[pelt2] = Dice.Roll(1, 4);
+                    _lootTable[pelt2] = Dice.Roll(0, 4);
                     _lootTable[gold2] = Dice.Roll(1, 6) * this._valueModifier;
                     this.AddAbility(new Fireball());
                     break;

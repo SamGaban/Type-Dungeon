@@ -1,4 +1,5 @@
 ﻿using HeroesVersusMonstersLibrary.Abilities;
+using HeroesVersusMonstersLibrary.Loots;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,7 @@ namespace HeroesVersusMonstersLibrary
             this.AddAbility(new CounterHit());
             this.AddAbility(new FaceFist());
             this.AddAbility(new DelawareSmash());
+            this.AddToInventory(new GoldCoin(), 10);
         }
     }
 }

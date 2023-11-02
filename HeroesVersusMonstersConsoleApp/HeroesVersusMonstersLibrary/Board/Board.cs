@@ -146,13 +146,6 @@ namespace HeroesVersusMonstersLibrary.Board
             }
             if (this._entityList.Count() == 1)
             {
-                Console.WriteLine("Combat Ended");
-                Console.WriteLine("You've looted :");
-                foreach (KeyValuePair<GenericLoot, int> entry in this._lootTable)
-                {
-                    Console.WriteLine($"{entry.Value} X {entry.Key.Type}");
-                }
-                Console.ReadKey();
                 this._fighting = false;
             }
         }
@@ -215,7 +208,32 @@ namespace HeroesVersusMonstersLibrary.Board
                 MonsterTurn();
                 if (!this.Fighting) break;
             }
+
+            Console.Clear();
+            Console.WriteLine("Combat Ended");
+            Console.WriteLine();
+            Console.WriteLine("Health Replenished");
+            Console.WriteLine();
+            Console.WriteLine("You've looted :");
+            Console.WriteLine();
+            foreach (KeyValuePair<GenericLoot, int> entry in this._lootTable)
+            {
+                this._entityList[0].AddToInventory(entry.Key, entry.Value);
+                Console.WriteLine($"{entry.Value} X {entry.Key.Type}");
+            }
+            Console.WriteLine();
+            Console.WriteLine("Your inventory :");
+            foreach(KeyValuePair<GenericLoot, int> entry in this._entityList[0].Inventory)
+            {
+                Console.WriteLine($"{entry.Key.Type} : {entry.Value}");
+            }
+            Console.ReadKey();
+
         }
+
+
+
+
 
         //Method to put stamina back to max at end of turn for players
 
@@ -250,6 +268,7 @@ namespace HeroesVersusMonstersLibrary.Board
                 counter++;
             }
             Console.WriteLine($"{counter} : Skip Turn");
+            Console.WriteLine();
             string? userChoice = Console.ReadLine();
             this.Refresh();
             int userInput = -1;

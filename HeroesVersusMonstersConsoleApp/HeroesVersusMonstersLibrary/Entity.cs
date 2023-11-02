@@ -6,11 +6,23 @@ namespace HeroesVersusMonstersLibrary
     public class Entity
     {
 
-        #region Props
+		#region Props
 
-        // List of abilities linked to the entity
 
-        protected List<Ability> _abilities = new List<Ability>();
+		//Inventory for heroes (always empty for monsters)
+
+		private Dictionary<GenericLoot, int> _inventory = new Dictionary<GenericLoot, int>();
+
+		public Dictionary<GenericLoot, int> Inventory
+		{
+			get { return _inventory; }
+			private set { _inventory = value; }
+		}
+
+
+		// List of abilities linked to the entity
+
+		protected List<Ability> _abilities = new List<Ability>();
 
         public List<Ability> Abilities
         {
@@ -135,11 +147,37 @@ namespace HeroesVersusMonstersLibrary
 
         #endregion
 
+		// Add to inventory
+
+		public void AddToInventory(GenericLoot loot, int quantity)
+		{
+			bool NotIn = true;
+			foreach(KeyValuePair<GenericLoot, int> entry in this._inventory)
+			{
+				if (loot.Type == entry.Key.Type)
+				{
+					this._inventory[entry.Key] += quantity;
+					NotIn = false;
+				}
+			}
+			if (NotIn)
+			{
+				this._inventory.Add(loot, quantity);
+			}
+		}
+
         //Repleneshing stamina to max
 
         public void StaminaToMax()
 		{
 			this._stamina = this._maxStamina;
+		}
+
+		//Replenishing health to max
+
+		public void Rest()
+		{
+			this._healthPoints = this._maxHealthPoints;
 		}
 
 		// Event that happens when an entity hits another one
