@@ -33,3 +33,4 @@ Console.Clear();
 
 //testBoard.Encounter();
 
+Terrain testMap = new Terrain(hero1);
