@@ -1,4 +1,5 @@
 ﻿using HeroesVersusMonstersLibrary.Abilities;
+using HeroesVersusMonstersLibrary.Loots;
 
 namespace HeroesVersusMonstersLibrary
 {
@@ -122,14 +123,28 @@ namespace HeroesVersusMonstersLibrary
 			private set { _maxHealthPoints = value; }
 		}
 
-		#endregion
+        //List made to contain all loots from the monster from the polymorph class "Generic Loot"
 
-		//Repleneshing stamina to max
+        protected Dictionary<GenericLoot, int> _lootTable = new Dictionary<GenericLoot, int>();
 
-		public void StaminaToMax()
+        public Dictionary<GenericLoot, int> LootTable
+        {
+            get { return _lootTable; }
+            private set { _lootTable = value; }
+        }
+
+        #endregion
+
+        //Repleneshing stamina to max
+
+        public void StaminaToMax()
 		{
 			this._stamina = this._maxStamina;
 		}
+
+		// Event that happens when an entity hits another one
+
+		public event Action<Entity, Ability, Entity> OnHit = delegate { };
 
 
 		//Using an ability on an entity
@@ -143,17 +158,19 @@ namespace HeroesVersusMonstersLibrary
 			ennemy._stamina -= ability.BaseDamage;
 			if (ennemy.MaxStamina > 0)
 			{
-            Console.WriteLine($"{this.Name} hit {ennemy.Name} for {ability.BaseDamage * modifier} dmg !");
+            Console.WriteLine($"{this.Name} hit {ennemy.Name} with {ability.Name} for {ability.BaseDamage * modifier} dmg !");
             Console.WriteLine($"{ennemy.Name} lost {ability.BaseDamage} stamina for the next turn");
             }
 			else
 			{
-            Console.WriteLine($"{this.Name} hit {ennemy.Name} for {ability.BaseDamage * modifier} dmg !");
+            Console.WriteLine($"{this.Name} hit {ennemy.Name} with {ability.Name} for {ability.BaseDamage * modifier} dmg !");
 			}
 			if (ennemy.HealthPoints <= 0)
 			{
 				ennemy._alive = false;
 			}
+
+			OnHit?.Invoke(this, ability, ennemy);
 
         }
 

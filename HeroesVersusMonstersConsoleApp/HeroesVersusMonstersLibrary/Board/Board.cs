@@ -1,5 +1,6 @@
 ﻿using HeroesVersusMonstersLibrary.Abilities;
 using HeroesVersusMonstersLibrary.Generators;
+using HeroesVersusMonstersLibrary.Loots;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,29 @@ namespace HeroesVersusMonstersLibrary.Board
     public class Board
     {
         #region Props
-        protected int _horizontalSize;
+
+        private bool _fighting = true;
+
+        public bool Fighting
+        {
+            get { return _fighting; }
+            private set { _fighting = value; }
+        }
+
+
+
+        protected int _horizontalSize = 160;
+
+        //List of loot for the completion of the board
+
+        protected Dictionary<GenericLoot, int> _lootTable = new Dictionary<GenericLoot, int>();
+
+        public Dictionary<GenericLoot, int> LootTable
+        {
+            get { return _lootTable; }
+            private set { _lootTable = value; }
+        }
+
 
         public int HorizontalSize
         {
@@ -19,7 +42,7 @@ namespace HeroesVersusMonstersLibrary.Board
             private set { _horizontalSize = value; }
         }
 
-        protected int _verticalSize;
+        protected int _verticalSize = 16;
 
         public int VerticalSize
         {
@@ -38,14 +61,101 @@ namespace HeroesVersusMonstersLibrary.Board
         #endregion
 
         #region CTOR
-        public Board(int horizontalsize, int verticalsize, List<Entity> entitylist)
+        public Board(List<Entity> entitylist)
         {
-            this._horizontalSize = horizontalsize;
-            this._verticalSize = verticalsize;
             this._entityList = entitylist;
+
+            this.FillLootTableWithEmpties();
         }
+
         #endregion
 
+        // Adding to the loot table which is already initialized with all possible loots set to 0
+
+        public void AddToLootTable(string nameOfTheLoot, int quantity)
+        {
+            foreach (KeyValuePair<GenericLoot, int> entry in _lootTable)
+            {
+                if (entry.Key.Type == nameOfTheLoot)
+                {
+                    _lootTable[entry.Key] += quantity;
+                }
+            }
+        }
+
+        //Filling the loot tables with empty values of each possible loot from the ennemies present
+
+        public void FillLootTableWithEmpties()
+        {
+            List<string> lootToFill = new List<string> { "base" };
+            foreach (Entity entity in _entityList)
+            {
+                foreach (KeyValuePair<GenericLoot, int> entry in entity.LootTable)
+                {
+                    if (!lootToFill.Contains(entry.Key.Type))
+                    {
+                        lootToFill.Add(entry.Key.Type);
+                    }
+                }
+            }
+
+            foreach (Entity entity in _entityList)
+            {
+                foreach (KeyValuePair<GenericLoot, int> entry in entity.LootTable)
+                {
+                    if (lootToFill.Contains(entry.Key.Type))
+                    {
+                        _lootTable[entry.Key] = 0;
+                        lootToFill.Remove(entry.Key.Type);
+                    }
+                }
+            }
+        }
+
+        //Check if an entity on the board is dead
+
+        public void OnHitHandler(Entity entity, Ability ability, Entity entity1)
+        {
+            CheckIfDead();
+        }
+
+        public void CheckIfDead()
+        {
+            List<Entity> entitiesToRemove = new List<Entity>();
+            foreach (Entity e in this._entityList)
+            {
+                if (e.HealthPoints <= 0)
+                {
+                    if (e.PlayerControlled)
+                    {
+                        this._fighting = false;
+                    }
+                    else
+                    {
+                        entitiesToRemove.Add(e);
+                    }
+                }
+            }
+            foreach (Entity a in entitiesToRemove)
+            {
+                foreach (KeyValuePair<GenericLoot, int> entry in a.LootTable)
+                {
+                    this.AddToLootTable(entry.Key.Type, entry.Value);
+                }
+                this._entityList.Remove(a);
+            }
+            if (this._entityList.Count() == 1)
+            {
+                Console.WriteLine("Combat Ended");
+                Console.WriteLine("You've looted :");
+                foreach (KeyValuePair<GenericLoot, int> entry in this._lootTable)
+                {
+                    Console.WriteLine($"{entry.Value} X {entry.Key.Type}");
+                }
+                Console.ReadKey();
+                this._fighting = false;
+            }
+        }
 
         //Method that handles the whole ennemy turn
 
@@ -74,6 +184,10 @@ namespace HeroesVersusMonstersLibrary.Board
                 Console.WriteLine("─────────────────────────");
                 Console.WriteLine();
                 Console.WriteLine();
+                while (Console.KeyAvailable)
+                {
+                    Console.ReadKey(true);
+                }
                 MonsterAttack(_entityList[i], _entityList[0]);
             }
         }
@@ -82,8 +196,7 @@ namespace HeroesVersusMonstersLibrary.Board
 
         public void MonsterAttack(Entity monster, Entity hero)
         {
-            QuickTimeEvent qte = new QuickTimeEvent(SentenceGenerator.Generate(3, monster), 8, monster, monster.Abilities[0], hero);
-            qte.RunChallengeAsync().GetAwaiter().GetResult();
+            QTE.RunChallenge(SentenceGenerator.Generate(3, monster), 8, monster, monster.Abilities[0], hero);
             this.Refresh();
         }
 
@@ -91,14 +204,16 @@ namespace HeroesVersusMonstersLibrary.Board
 
         public void Encounter()
         {
-            bool fighting = true;
             // this.EntityList[0].Alive && this.EntityList.Count > 1
-            while (fighting) 
+            while (this.Fighting && this._entityList.Count() > 1) 
             {
                 this.Refresh();
                 PlayerTurn();
+                if (!this.Fighting) break;
                 RefreshStamina();
+                if (!this.Fighting) break;
                 MonsterTurn();
+                if (!this.Fighting) break;
             }
         }
 
@@ -233,8 +348,6 @@ namespace HeroesVersusMonstersLibrary.Board
             posX = 0;
             posY = this._verticalSize + 8;
             Console.SetCursorPosition(posX, posY);
-            Console.WriteLine("└───────────────────────────────────────────────────────────────────────────────" +
-                "────────────────────────────────────────────────────────────────────────────────");
         }
 
 

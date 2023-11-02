@@ -12,16 +12,6 @@ namespace HeroesVersusMonstersLibrary
     public class Monster : Entity
     {
 
-        //List made to contain all loots from the monster from the polymorph class "Generic Loot"
-
-        protected Dictionary<GenericLoot, int> _lootTable = new Dictionary<GenericLoot, int>();
-
-        public Dictionary<GenericLoot, int> LootTable
-        {
-            get { return _lootTable; }
-            private set { _lootTable = value; }
-        }
-
         //Value modifier to handle how much gold this mob is worth
 
         protected int _valueModifier;
