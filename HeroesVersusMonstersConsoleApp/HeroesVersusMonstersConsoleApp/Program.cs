@@ -5,32 +5,20 @@ using HeroesVersusMonstersLibrary.Abilities;
 using HeroesVersusMonstersLibrary.Generators;
 
 
-#region Base Setup And hero creation
+
 Console.CursorVisible = false;
 Hero hero1 = new Hero();
 Console.Clear();
-#endregion
-
-//#region Test monsters creations
-//Monster monster3 = new Monster(1);
-//Monster monster4 = new Monster(0);
 
 
-//List<Entity> testEntities = new List<Entity>();
-
-//testEntities.Add(hero1);
-//testEntities.Add(monster3);
-//testEntities.Add(monster4);
-
-//#endregion
-
-//Board testBoard = new Board(testEntities);
-
-//foreach (Entity entity in testEntities)
-//{
-//    entity.OnHit += testBoard.OnHitHandler;
-//}
-
-//testBoard.Encounter();
-
-Terrain testMap = new Terrain(hero1);
+Terrain map1 = new Terrain();
+map1.SetActivePosition(2, 13);
+map1.GenerateWall(4, 12, 26, 3);
+map1.GenerateWall(4, 8, 31, 2);
+map1.GenerateWall(43, 5, 2, 10);
+map1.GenerateWall(35, 5, 8, 5);
+map1.GenerateWall(31, 3, 5, 2);
+map1.GenerateWall(4, 3, 27, 4);
+map1.GenerateWall(45, 9, 13, 4);
+Engine gameEngine = new Engine(map1, hero1);
+gameEngine.Initialize();

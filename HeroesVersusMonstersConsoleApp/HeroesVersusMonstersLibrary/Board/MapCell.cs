@@ -8,6 +8,9 @@ namespace HeroesVersusMonstersLibrary.Board
 {
     public class MapCell
     {
+
+		#region Props
+
 		protected int _x;
 
 		public int X
@@ -31,12 +34,20 @@ namespace HeroesVersusMonstersLibrary.Board
 			get { return _type; }
 			private set { _type = value; }
 		}
+		#endregion
 
         public MapCell(int x, int y, int type)
 		{
 			_x = x;
 			_y = y;
 			_type = type;
+		}
+
+		//Method to change the type of a map tile
+
+		public void ChangeType(int newtype)
+		{
+			_type = newtype;
 		}
 
     }

@@ -154,8 +154,10 @@ namespace HeroesVersusMonstersLibrary.Board
 
         public void MonsterTurn()
         {
-            for (int i = 1;  i < _entityList.Count; i++)
+            int countBefore;
+            for (int i = 1; i < _entityList.Count; i++)
             {
+                countBefore = this._entityList.Count();
                 Console.WriteLine($"Attack from {_entityList[i].Name} incoming !");
                 Console.WriteLine();
                 this.Refresh();
@@ -182,6 +184,10 @@ namespace HeroesVersusMonstersLibrary.Board
                     Console.ReadKey(true);
                 }
                 MonsterAttack(_entityList[i], _entityList[0]);
+                if (countBefore != this._entityList.Count())
+                {
+                    i--;
+                }
             }
         }
 
@@ -195,7 +201,7 @@ namespace HeroesVersusMonstersLibrary.Board
 
         //Method that handles the encounter of participants in the board
 
-        public void Encounter()
+        public bool Encounter()
         {
             // this.EntityList[0].Alive && this.EntityList.Count > 1
             while (this.Fighting && this._entityList.Count() > 1) 
@@ -210,6 +216,7 @@ namespace HeroesVersusMonstersLibrary.Board
             }
 
             Console.Clear();
+            this._entityList[0].Rest();
             Console.WriteLine(AsciiArt.fightWon);
             Console.WriteLine();
             Console.WriteLine("Health Replenished");
@@ -221,18 +228,10 @@ namespace HeroesVersusMonstersLibrary.Board
                 this._entityList[0].AddToInventory(entry.Key, entry.Value);
                 Console.WriteLine(entry.Value > 0 ? $"{entry.Value} X {entry.Key.Type}" : "");
             }
-            Console.WriteLine();
-            Console.WriteLine("Your inventory :");
-            foreach(KeyValuePair<GenericLoot, int> entry in this._entityList[0].Inventory)
-            {
-                Console.WriteLine($"{entry.Key.Type} : {entry.Value}");
-            }
             Console.ReadKey();
+            return true;
 
         }
-
-
-
 
 
         //Method to put stamina back to max at end of turn for players
