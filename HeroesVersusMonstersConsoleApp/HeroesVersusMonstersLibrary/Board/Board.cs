@@ -257,8 +257,11 @@ namespace HeroesVersusMonstersLibrary.Board
             Console.WriteLine("What will you do ?");
             Console.WriteLine();
             List<String> options = new List<String>();
+            Dictionary<int, int> optionIndex = new Dictionary<int, int>();
+            int counterOption = 0;
             foreach (Ability ability in this.EntityList[0].Abilities.Where(a => a.Active))
             {
+                optionIndex.Add(counterOption++, this.EntityList[0].Abilities.IndexOf(ability));
                 String toAdd2 = "";
                 if (ability.Active)
                 {
@@ -273,9 +276,10 @@ namespace HeroesVersusMonstersLibrary.Board
             int userChoice = Dice.ChoiceGenerator(Console.CursorLeft, Console.CursorTop, options);
             this.Refresh();
 
-            if (userChoice < options.Count() - 1 && this.EntityList[0].Abilities[userChoice].StaminaCost <= this.EntityList[0].Stamina)
+            if (userChoice < options.Count() - 1 && this.EntityList[0].Abilities[optionIndex[userChoice]].StaminaCost <= this.EntityList[0].Stamina)
             {
-                Console.WriteLine($"On who do you want to use {this.EntityList[0].Abilities[userChoice].Name} ?");
+                Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop + 1);
+                Console.WriteLine($"On who do you want to use {this.EntityList[0].Abilities[optionIndex[userChoice]].Name} ?");
                 List<String> options2 = new List<String>();
                 String monsterOption = "";
                 Dictionary<String, int> presentMonsters = new Dictionary<String, int>();
@@ -295,7 +299,7 @@ namespace HeroesVersusMonstersLibrary.Board
                 }
                 int userChoice2 = Dice.ChoiceGenerator(Console.CursorLeft, Console.CursorTop, options2);
                 this.Refresh();
-                this.EntityList[0].UseAbility(this.EntityList[0].Abilities[userChoice], this.EntityList[userChoice2 + 1]);
+                this.EntityList[0].UseAbility(this.EntityList[0].Abilities[optionIndex[userChoice]], this.EntityList[userChoice2 + 1]);
                 Thread.Sleep(1500);
             }
             else

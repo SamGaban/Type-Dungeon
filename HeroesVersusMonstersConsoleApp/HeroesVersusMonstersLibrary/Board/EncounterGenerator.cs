@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,6 +42,15 @@ namespace HeroesVersusMonstersLibrary.Board
 			this._engine = engine;
         }
 
+
+		//public void PresentEncounter()
+		//{
+		//	bool NotChosen = true;
+		//	while (NotChosen)
+		//	{
+
+		//	}
+		//}
 
 		public void GenerateEncounter()
 		{

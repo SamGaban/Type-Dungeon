@@ -15,7 +15,6 @@ namespace HeroesVersusMonstersLibrary
 
         #region props
 
-
         #endregion
 
 

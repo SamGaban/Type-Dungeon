@@ -12,6 +12,26 @@ namespace HeroesVersusMonstersLibrary.Board
 
 
         #region Props
+
+        private int _lastKnowX;
+
+        public int LastKnowX
+        {
+            get { return _lastKnowX; }
+            private set { _lastKnowX = value; }
+        }
+
+        private int _lastKnownY;
+
+        public int LastKnownY
+        {
+            get { return _lastKnownY; }
+            private set { _lastKnownY = value; }
+        }
+
+
+
+
         private EncounterGenerator _encounterGenerator;
 
         public EncounterGenerator EncounterGenerator
@@ -124,17 +144,14 @@ namespace HeroesVersusMonstersLibrary.Board
                         case ConsoleKey.D:
                             Move("right");
                             break;
-                        case ConsoleKey.Y:
-                            this.LaunchEncounter();
-                            break;
                         case ConsoleKey.Escape:
                             this._gameRunning = false;
                             break;
                         case ConsoleKey.G:
                             this._encounterGenerator.GenerateEncounter();
+                            this.Refresh();
                             break;
                     }
-                Refresh();
                 }
             }
         }
@@ -175,6 +192,81 @@ namespace HeroesVersusMonstersLibrary.Board
         }
 
 
+        // Teleport back to last position
+
+        public void TeleportBack()
+        {
+            Console.SetCursorPosition(this._activeMap.ActiveX, this._activeMap.ActiveY);
+            Console.Write("E");
+            this._heroPosX = this.LastKnowX;
+            this._heroPosY = this.LastKnownY;
+            this._activeMap.SetActivePosition(this.HeroPosX, this.HeroPosY);
+            Console.SetCursorPosition(this._heroPosX, this._heroPosY);
+            Console.Write(">");
+        }
+
+        //Drawing character
+
+        public void DrawChar()
+        {
+            Console.SetCursorPosition(this._activeMap.ActiveX, this._activeMap.ActiveY);
+            switch (this._direction)
+            {
+                case "up":
+                    Console.Write("^");
+                    break;
+                case "left":
+                    Console.Write("<");
+                    break;
+                case "right":
+                    Console.Write(">");
+                    break;
+                case "down":
+                    Console.Write("v");
+                    break;
+
+            }
+        }
+
+
+        //presenting an encounter
+
+        public void PresentEncounter()
+        {
+            foreach (KeyValuePair<int, Encounter> entry in this._encounterGenerator.EncounterList)
+            {
+                if (entry.Value.PosX == this.HeroPosX && entry.Value.PosY == this.HeroPosY)
+                {
+                    Console.SetCursorPosition(60, 18);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(60, 18);
+                    foreach (Entity entity in entry.Value.Entities)
+                    {
+                        Console.Write($"{entity.Name} ");
+                    }
+                    Console.SetCursorPosition(60, 19);
+                    Console.WriteLine("Do you want to fight ?");
+                    String choice1 = "Yes";
+                    String choice2 = "No";
+                    List<String> choices = new List<String>();
+                    choices.Add(choice1);
+                    choices.Add(choice2);
+                    int userChoice = Dice.ChoiceGenerator(60, 20, choices);
+                    if (userChoice == 0)
+                    {
+                        this.LaunchEncounter();
+                        this.Refresh();
+                    }
+                    else
+                    {
+                        this.TeleportBack();
+                        this.Refresh();
+                    }
+                }
+            }
+        }
+
+
         //Refreshing the screen
         public void Refresh()
         {
@@ -186,39 +278,7 @@ namespace HeroesVersusMonstersLibrary.Board
                     this._heroPosX = terrain.ActiveX;
                     this._heroPosY = terrain.ActiveY;
                     terrain.Display();
-                    Console.SetCursorPosition(this._heroPosX, this._heroPosY);
-                    switch (this._direction)
-                    {
-                        case "up":
-                            Console.Write("^");
-                            break;
-                        case "left":
-                            Console.Write("<");
-                            break;
-                        case "right":
-                            Console.Write(">");
-                            break;
-                        case "down":
-                            Console.Write("v");
-                            break;
-                        case "encounter":
-                            foreach (KeyValuePair<int, Encounter> entry in this._encounterGenerator.EncounterList)
-                            {
-                                if (entry.Value.PosX == this.HeroPosX && entry.Value.PosY == this.HeroPosY)
-                                {
-                                    Console.SetCursorPosition(60, 18);
-                                    Console.Write(new string(' ', Console.WindowWidth));
-                                    Console.SetCursorPosition(60, 18);
-                                    foreach (Entity entity in entry.Value.Entities)
-                                    {
-                                        Console.Write($"{entity.Name} ");
-                                    }
-                                    Console.SetCursorPosition(60, 19);
-                                    Console.WriteLine("Do you want to fight ? (Y for yes, move for no)");
-                                }
-                            }
-                            break;
-                    }
+                    this.DrawChar();
                     Console.SetCursorPosition(0, 18);
                     Console.WriteLine(this._hero.Name);
                     Console.WriteLine("Inventory");
@@ -244,60 +304,84 @@ namespace HeroesVersusMonstersLibrary.Board
                 case "up":
                     if (this._activeMap.Map[this._activeMap.ActiveY - 1][this._activeMap.ActiveX].Type == 0)
                     {
+                        this._lastKnowX = this._activeMap.ActiveX;
+                        this._lastKnownY = this._activeMap.ActiveY;
+                        Console.SetCursorPosition(this._activeMap.ActiveX, this._activeMap.ActiveY);
+                        Console.Write(" ");
                         this._activeMap.SetActivePosition(this._activeMap.ActiveX, this._activeMap.ActiveY - 1);
                         HeroPosSet(this._activeMap.ActiveX, this._activeMap.ActiveY - 1);
                         ChangeDirection("up");
+
                     }
                     else if (this._activeMap.Map[this._activeMap.ActiveY - 1][this._activeMap.ActiveX].Type < -1000)
                     {
-                        ChangeDirection("encounter");
+                        this._lastKnowX = this._activeMap.ActiveX;
+                        this._lastKnownY = this._activeMap.ActiveY;
                         this._activeMap.SetActivePosition(this._activeMap.ActiveX, this._activeMap.ActiveY - 1);
                         HeroPosSet(this._activeMap.ActiveX, this._activeMap.ActiveY - 1);
+                        this.Refresh();
+                        this.PresentEncounter();
                     }
                     break;
                 case "left":
                     if (this._activeMap.Map[this._activeMap.ActiveY][this._activeMap.ActiveX - 1].Type == 0)
                     {
+                        Console.SetCursorPosition(this._activeMap.ActiveX, this._activeMap.ActiveY);
+                        Console.Write(" ");
                         this._activeMap.SetActivePosition(this._activeMap.ActiveX - 1, this._activeMap.ActiveY);
                         HeroPosSet(this._activeMap.ActiveX - 1, this._activeMap.ActiveY);
                         ChangeDirection("left");
                     }
                     else if (this._activeMap.Map[this._activeMap.ActiveY][this._activeMap.ActiveX - 1].Type < -1000)
                     {
-                        ChangeDirection("encounter");
+                        this._lastKnowX = this._activeMap.ActiveX;
+                        this._lastKnownY = this._activeMap.ActiveY;
                         this._activeMap.SetActivePosition(this._activeMap.ActiveX - 1, this._activeMap.ActiveY);
                         HeroPosSet(this._activeMap.ActiveX - 1, this._activeMap.ActiveY);
+                        this.Refresh();
+                        this.PresentEncounter();
                     }
                     break;
                  case "right":
                     if (this._activeMap.Map[this._activeMap.ActiveY][this._activeMap.ActiveX + 1].Type == 0)
                     {
+                        Console.SetCursorPosition(this._activeMap.ActiveX, this._activeMap.ActiveY);
+                        Console.Write(" ");
                         this._activeMap.SetActivePosition(this._activeMap.ActiveX + 1, this._activeMap.ActiveY);
                         HeroPosSet(this._activeMap.ActiveX + 1, this._activeMap.ActiveY);
                         ChangeDirection("right");
                     }
                     else if (this._activeMap.Map[this._activeMap.ActiveY][this._activeMap.ActiveX + 1].Type < -1000)
                     {
-                        ChangeDirection("encounter");
+                        this._lastKnowX = this._activeMap.ActiveX;
+                        this._lastKnownY = this._activeMap.ActiveY;
                         this._activeMap.SetActivePosition(this._activeMap.ActiveX + 1, this._activeMap.ActiveY);
                         HeroPosSet(this._activeMap.ActiveX + 1, this._activeMap.ActiveY);
+                        this.Refresh();
+                        this.PresentEncounter();
                     }
                     break;
                 case "down":
                     if (this._activeMap.Map[this._activeMap.ActiveY + 1][this._activeMap.ActiveX].Type == 0)
                     {
+                        Console.SetCursorPosition(this._activeMap.ActiveX, this._activeMap.ActiveY);
+                        Console.Write(" ");
                         this._activeMap.SetActivePosition(this._activeMap.ActiveX, this._activeMap.ActiveY + 1);
                         HeroPosSet(this._activeMap.ActiveX, this._activeMap.ActiveY + 1);
                         ChangeDirection("down");
                     }
                     else if (this._activeMap.Map[this._activeMap.ActiveY + 1][this._activeMap.ActiveX].Type < -1000)
                     {
-                        ChangeDirection("encounter");
+                        this._lastKnowX = this._activeMap.ActiveX;
+                        this._lastKnownY = this._activeMap.ActiveY;
                         this._activeMap.SetActivePosition(this._activeMap.ActiveX, this._activeMap.ActiveY + 1);
                         HeroPosSet(this._activeMap.ActiveX, this._activeMap.ActiveY + 1);
+                        this.Refresh();
+                        this.PresentEncounter();
                     }
                     break;
             }
+            this.DrawChar();
         }
 
         // Change Active Map
