@@ -64,7 +64,8 @@ namespace HeroesVersusMonstersLibrary
             }
             bool notChosen = true;
             Console.SetCursorPosition(posx, posy - 1);
-            Console.WriteLine("See options with Up and Down arrows, and select your choice with Enter");
+            Console.WriteLine("Navigate options with Up and Down arrows, and select your choice with Enter");
+            Console.WriteLine();
             Console.SetCursorPosition(posx, posy);
             Console.WriteLine(choicesDic[currentChoice]);
             ConsoleKeyInfo key;
@@ -78,10 +79,14 @@ namespace HeroesVersusMonstersLibrary
                         case ConsoleKey.UpArrow:
                             currentChoice = (currentChoice == 0) ? list.Count() - 1 : currentChoice - 1;
                             Console.SetCursorPosition(posx, posy);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(posx, posy);
                             Console.WriteLine(choicesDic[currentChoice]);
                             break;
                         case ConsoleKey.DownArrow:
                             currentChoice = (currentChoice == list.Count() - 1) ? 0 : currentChoice + 1;
+                            Console.SetCursorPosition(posx, posy);
+                            Console.Write(new string(' ', Console.WindowWidth));
                             Console.SetCursorPosition(posx, posy);
                             Console.WriteLine(choicesDic[currentChoice]);
                             break;

@@ -64,7 +64,7 @@ namespace HeroesVersusMonstersLibrary.Board
 			this._posY = posy;
             this._power = power;
 			Random rnd = new Random();
-			for (int i = 0; i < rnd.Next(2, 7); i++)
+			for (int i = 0; i < rnd.Next(1, 5); i++)
 			{
 				Monster newMonster = new Monster(rnd.Next(3));
                 this._entities.Add(newMonster);

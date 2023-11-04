@@ -3,6 +3,7 @@ using HeroesVersusMonstersLibrary.Generators;
 using HeroesVersusMonstersLibrary.Loots;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -255,49 +256,52 @@ namespace HeroesVersusMonstersLibrary.Board
             Console.WriteLine();
             Console.WriteLine("What will you do ?");
             Console.WriteLine();
-            int counter = 1;
             List<String> options = new List<String>();
-            foreach (Ability ability in this.EntityList[0].Abilities)
+            foreach (Ability ability in this.EntityList[0].Abilities.Where(a => a.Active))
             {
-                String toAdd = "";
+                String toAdd2 = "";
                 if (ability.Active)
                 {
-                    Console.Write($"{counter} : {ability.Name} (cost {ability.StaminaCost} stamina)");
-                    Console.WriteLine($"{(ability.StaminaCost > this.EntityList[0].Stamina ? " | Not Enough Stamina - Will skip turn !" : "")}");
-                    Console.WriteLine();
+                    toAdd2 += $"{ability.Name} (cost {ability.StaminaCost} stamina)";
+                    toAdd2 += $"{(ability.StaminaCost > this.EntityList[0].Stamina ? " | Not Enough Stamina - Will skip turn !" : "")}";
                 }
-                counter++;
+                options.Add(toAdd2);
             }
-            Console.WriteLine($"{counter} : Skip Turn");
-            Console.WriteLine();
-            string? userChoice = Console.ReadLine();
+            String toAdd = $"Skip Turn";
+            options.Add(toAdd);
             this.Refresh();
-            int userInput = -1;
-            if (int.TryParse(userChoice, out userInput))
+            int userChoice = Dice.ChoiceGenerator(Console.CursorLeft, Console.CursorTop, options);
+            this.Refresh();
+
+            if (userChoice < options.Count() - 1 && this.EntityList[0].Abilities[userChoice].StaminaCost <= this.EntityList[0].Stamina)
             {
-                if (userInput != counter && this.EntityList[0].Abilities[userInput - 1].StaminaCost <= this.EntityList[0].Stamina)
+                Console.WriteLine($"On who do you want to use {this.EntityList[0].Abilities[userChoice].Name} ?");
+                List<String> options2 = new List<String>();
+                String monsterOption = "";
+                Dictionary<String, int> presentMonsters = new Dictionary<String, int>();
+                for (int i = 1; i < this.EntityList.Count; i++)
                 {
-                    Console.WriteLine($"On who do you want to use {this.EntityList[0].Abilities[userInput - 1].Name} ?");
-                    for (int i = 1; i < this.EntityList.Count; i++)
+                    monsterOption = "";
+                    if (presentMonsters.ContainsKey(this.EntityList[i].Name))
                     {
-                        Console.WriteLine($"{(this.EntityList[i].Alive ? $"{i} : {this.EntityList[i].Name}" : $"{i} : {this.EntityList[i].Name} - Dead")}");
+                        presentMonsters[this.EntityList[i].Name] += 1;
                     }
-                    string? userString = Console.ReadLine();
-                    int userInt = -1;
-                    int.TryParse(userString, out userInt);
-                    this.Refresh();
-                    this.EntityList[0].UseAbility(this.EntityList[0].Abilities[userInput - 1], this.EntityList[userInt]);
-                    Thread.Sleep(1500);
+                    else
+                    {
+                        presentMonsters[this.EntityList[i].Name] = 1;
+                    }
+                    monsterOption += $"{this.EntityList[i].Name} {presentMonsters[this.EntityList[i].Name]}";
+                    options2.Add(monsterOption);
                 }
-                else
-                {
-                    Console.WriteLine("Turn Skipped");
-                    Thread.Sleep(1500);
-                }
+                int userChoice2 = Dice.ChoiceGenerator(Console.CursorLeft, Console.CursorTop, options2);
+                this.Refresh();
+                this.EntityList[0].UseAbility(this.EntityList[0].Abilities[userChoice], this.EntityList[userChoice2 + 1]);
+                Thread.Sleep(1500);
             }
             else
             {
-                Console.WriteLine("Wrong input, PUNISH !");
+                Console.WriteLine("Turn Skipped");
+                Thread.Sleep(1500);
             }
             this.Refresh();
         }
