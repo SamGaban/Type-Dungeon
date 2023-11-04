@@ -50,6 +50,50 @@ namespace HeroesVersusMonstersLibrary
 
         }
 
+
+        // Function that takes a position x, y and a list of strings, display the options, makes the user able to chose with up and down arrows and enter, returns int of choice
+        public static int ChoiceGenerator(int posx, int posy, List<String> list)
+        {
+            Console.CursorVisible = false;
+            Dictionary<int, String> choicesDic = new Dictionary<int, String>();
+            int counter = 0;
+            int currentChoice = 0;
+            foreach (String s in list)
+            {
+                choicesDic.Add(counter++, s);
+            }
+            bool notChosen = true;
+            Console.SetCursorPosition(posx, posy - 1);
+            Console.WriteLine("See options with Up and Down arrows, and select your choice with Enter");
+            Console.SetCursorPosition(posx, posy);
+            Console.WriteLine(choicesDic[currentChoice]);
+            ConsoleKeyInfo key;
+            while (notChosen)
+            {
+                if (Console.KeyAvailable)
+                {
+                    key = Console.ReadKey(true);
+                    switch (key.Key)
+                    {
+                        case ConsoleKey.UpArrow:
+                            currentChoice = (currentChoice == 0) ? list.Count() - 1 : currentChoice - 1;
+                            Console.SetCursorPosition(posx, posy);
+                            Console.WriteLine(choicesDic[currentChoice]);
+                            break;
+                        case ConsoleKey.DownArrow:
+                            currentChoice = (currentChoice == list.Count() - 1) ? 0 : currentChoice + 1;
+                            Console.SetCursorPosition(posx, posy);
+                            Console.WriteLine(choicesDic[currentChoice]);
+                            break;
+                        case ConsoleKey.Enter:
+                            notChosen = false;
+                            break;
+                    }
+                }
+            }
+            return currentChoice;
+
+        }
     }
 
 

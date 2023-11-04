@@ -256,8 +256,10 @@ namespace HeroesVersusMonstersLibrary.Board
             Console.WriteLine("What will you do ?");
             Console.WriteLine();
             int counter = 1;
+            List<String> options = new List<String>();
             foreach (Ability ability in this.EntityList[0].Abilities)
             {
+                String toAdd = "";
                 if (ability.Active)
                 {
                     Console.Write($"{counter} : {ability.Name} (cost {ability.StaminaCost} stamina)");

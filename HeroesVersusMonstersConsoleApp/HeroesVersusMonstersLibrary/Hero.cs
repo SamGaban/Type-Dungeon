@@ -30,9 +30,14 @@ namespace HeroesVersusMonstersLibrary
             Console.CursorVisible = true;
             this._playerControlled = true;
             Console.WriteLine(AsciiArt.startScreen);
-            Console.WriteLine("What Race will you pick ? (1. Human / 2. Dwarf)");
+            string choice1 = "Human";
+            string choice2 = "Dwarf";
+            List<string> choices = new List<string>();
+            choices.Add(choice1);
+            choices.Add(choice2);
+            Console.WriteLine("What Race will you pick ?");
             Console.WriteLine();
-            this._race = Console.ReadLine() == "1" ? "Human" : "Dwarf";
+            this._race = Dice.ChoiceGenerator(Console.CursorLeft, Console.CursorTop + 1, choices) == 0 ? "Human" : "Dwarf";
             Console.Clear();
             Console.WriteLine(AsciiArt.startScreen);
             Console.WriteLine(this._race == "Human" ? AsciiArt.warrior : AsciiArt.dwarf);

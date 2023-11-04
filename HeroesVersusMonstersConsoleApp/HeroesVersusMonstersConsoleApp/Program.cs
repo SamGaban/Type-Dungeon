@@ -5,7 +5,9 @@ using HeroesVersusMonstersLibrary.Abilities;
 using HeroesVersusMonstersLibrary.Generators;
 
 
-
+Console.WriteLine("Press Any Key To Continue");
+Console.ReadKey(true);
+Console.Clear();
 Console.CursorVisible = false;
 Hero hero1 = new Hero();
 Console.Clear();
