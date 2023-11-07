@@ -130,7 +130,7 @@ namespace HeroesVersusMonstersLibrary.Board
         public void Initialize()
         {
             TurnGameOn();
-            EncounterInit(); // HEREEEEEEEEEE
+            EncounterInit();
             Refresh();
             ConsoleKeyInfo keyInfo;
             while (this._gameRunning)
@@ -198,6 +198,9 @@ namespace HeroesVersusMonstersLibrary.Board
                     this._encounterGenerator.EncounterList.Remove(keyToRemove);
                 }
             }
+            this.EncounterInit();
+            this.Hero.StaminaToMax();
+            this.Refresh();
         }
 
 
@@ -264,8 +267,7 @@ namespace HeroesVersusMonstersLibrary.Board
                     if (userChoice == 0)
                     {
                         this.LaunchEncounter();
-                        this.Hero.StaminaToMax();
-                        this.Refresh();
+                        break;
                     }
                     else
                     {
@@ -280,7 +282,6 @@ namespace HeroesVersusMonstersLibrary.Board
         //Refreshing the screen
         public void Refresh()
         {
-            EncounterInit(); // DEBUGHEEEEEEEEEEEEEEEERE
             Console.Clear();
             foreach (Terrain terrain in mapList)
             {
