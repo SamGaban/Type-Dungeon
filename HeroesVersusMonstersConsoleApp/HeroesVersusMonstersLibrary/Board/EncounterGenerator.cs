@@ -52,47 +52,106 @@ namespace HeroesVersusMonstersLibrary.Board
 		//	}
 		//}
 
-		public void GenerateEncounter()
-		{
-			Random rnd = new Random();
-			bool notFree = true;
-			int encounterX = -1;
+		//public void GenerateEncounter()
+		//{
+		//	Random rnd = new Random();
+		//	bool notFree = true;
+		//	int encounterX = -1;
+		//	int encounterY = -1;
+		//	while (notFree)
+		//	{
+		//		encounterX = rnd.Next(160);
+		//		encounterY = rnd.Next(16);
+		//		if (encounterX != this._engine.HeroPosX && encounterY != this._engine.HeroPosY)
+		//		{
+		//			if (this._engine.ActiveMap.Map[encounterY][encounterX].Type == 0)
+		//			{
+		//				notFree = false;
+		//			}
+		//		}
+		//	}
+
+		//	Encounter newEncounter = new Encounter(this, 10, encounterX, encounterY);
+		//	encounterX = 1;
+		//	notFree = true;
+		//	while (notFree)
+		//	{
+		//		encounterX = rnd.Next(-2000, -1000);
+		//		notFree = false;
+		//		foreach (KeyValuePair<int, Encounter> entry in this._encounterList)
+		//		{
+		//			if (entry.Key == encounterX)
+		//			{
+		//				notFree = true;
+		//			}
+		//		} 
+		//	}
+		//	this._encounterList.Add(encounterX, newEncounter);
+
+		//	foreach(KeyValuePair<int, Encounter> entry in this._encounterList)
+		//	{
+		//		this._engine.ActiveMap.Map[entry.Value.PosY][entry.Value.PosX].ChangeType(entry.Key);
+		//	}
+		//}
+
+
+
+        public void GenerateEncounterRoomOne(int startx, int starty, int horizontalsize, int verticalsize)
+        {
+            Random rnd = new Random();
+            bool notFree = true;
+            int encounterX = -1;
 			int encounterY = -1;
-			while (notFree)
+			int encounterCounter = 0;
+			foreach (KeyValuePair<int, Encounter> encounter in this._encounterList)
 			{
-				encounterX = rnd.Next(160);
-				encounterY = rnd.Next(16);
-				if (encounterX != this._engine.HeroPosX && encounterY != this._engine.HeroPosY)
+				if (encounter.Value.PosX < startx + horizontalsize && encounter.Value.PosX > startx && encounter.Value.PosY > starty && encounter.Value.PosY < starty + verticalsize)
 				{
-					if (this._engine.ActiveMap.Map[encounterY][encounterX].Type == 0)
-					{
-						notFree = false;
-					}
+					encounterCounter++;
 				}
 			}
-
-			Encounter newEncounter = new Encounter(this, 10, encounterX, encounterY);
-			encounterX = 1;
-			notFree = true;
-			while (notFree)
+			while (encounterCounter < 5)
 			{
-				encounterX = rnd.Next(-2000, -1000);
-				notFree = false;
-				foreach (KeyValuePair<int, Encounter> entry in this._encounterList)
-				{
-					if (entry.Key == encounterX)
-					{
-						notFree = true;
-					}
-				} 
-			}
-			this._encounterList.Add(encounterX, newEncounter);
+                while (notFree)
+                {
+                    encounterX = rnd.Next(startx, startx + horizontalsize);
+                    encounterY = rnd.Next(starty, starty + verticalsize);
+                    if (encounterX != this._engine.HeroPosX && encounterY != this._engine.HeroPosY)
+                    {
+                        if (this._engine.ActiveMap.Map[encounterY][encounterX].Type == 0)
+                        {
+                            notFree = false;
+                        }
+                    }
+                }
 
-			foreach(KeyValuePair<int, Encounter> entry in this._encounterList)
-			{
-				this._engine.ActiveMap.Map[entry.Value.PosY][entry.Value.PosX].ChangeType(entry.Key);
-			}
-		}
+                Encounter newEncounter = new Encounter(this, 10, encounterX, encounterY);
+                int encounterID = 1;
+                notFree = true;
+                while (notFree)
+                {
+                    encounterID = rnd.Next(-2000, -1000);
+                    notFree = false;
+                    foreach (KeyValuePair<int, Encounter> entry in this._encounterList)
+                    {
+                        if (entry.Key == encounterID)
+                        {
+                            notFree = true;
+                        }
+                    }
+                }
+                this._encounterList.Add(encounterID, newEncounter);
+
+
+                foreach (KeyValuePair<int, Encounter> entry in this._encounterList)
+                {
+                    this._engine.ActiveMap.Map[entry.Value.PosY][entry.Value.PosX].ChangeType(entry.Key);
+                }
+                encounterCounter++;
+                notFree = true;
+            }
+        }
+
     }
 }
 
